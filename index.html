@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enhanced Turn.js Book</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="turn.js"></script>
+  <style>
+    @import url('https: //fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Outfit:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+    body {
+      background-image: url('/bg-1.jpg');
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #F0F0F0;
+      overflow: hidden;
+    }
+    #book {
+      margin-top: 28px;
+      width: 600px;
+      height: 400px;
+    }
+    .page {
+      
+      width: 300px;
+      height: 400px;
+      background: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      border: 1px solid #ccc;
+      user-select: none;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .double {
+      background-size: 200% 100%;
+      background-repeat: no-repeat;
+    }
+    .double.even {
+      background-position: 0% 0%;
+    }
+    .double.odd {
+      background-position: 100% 0%;
+    }
+    .back{
+      position: absolute;
+      top:18px;
+      cursor: pointer;
+      margin: auto 0;
+      gap:10px;
+      font-family: "Lato",sans-serif;
+      font-weight: 500;
+      
+    }
+   
+    #logoImg{
+      height: 20px;
+    }
+    .arrow{
+      position: absolute;
+      top:5px;
+      left:10px;
+      font-weight: bold;
+      font-size:30px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="back">
+    <img class="" src="/group3.svg" id="logoImg" />
+  </div>
+  <div class="arrow">←</div>
+  <div id="book">
+    <div class="page double odd" style="background-image:url('/firstPage.jpg') ;"></div>
+    <div class="page double even" style="background-image: url('/1.png');"></div>
+    <div class="page double odd" style="background-image: url('/1.png');"></div>
+    <div class="page double even" style="background-image: url('/2.png');"></div>
+    <div class="page double odd" style="background-image: url('/2.png');"></div>
+    <div class="page double even" style="background-image: url('/3.png');"></div>
+    <div class="page double odd" style="background-image: url('/3.png');"></div>
+    <div class="page double even" style="background-image: url('/4.png');"></div>
+    <div class="page double odd" style="background-image: url('/4.png');"></div>
+    <div class="page double even" style="background-image: url('/5.png');"></div>
+    <div class="page double odd" style="background-image: url('/5.png');"></div>
+    <div class="page double " style="background-image:url('/firstPage.jpg') "></div>
+  </div>
+  <script>
+    const logoButton=document.querySelector(".back");
+    const arrowButton = document.querySelector(".arrow")
+    logoButton.addEventListener('click',moveToHome)
+    arrowButton.addEventListener('click',moveToHome)
+    function moveToHome(){
+      window.open("https://motherspridepreschool.com/","_self","noopener,noreferrer")
+    }
+
+    $(document).ready(function() {
+      $('#book').turn({
+        width:"85vw",
+        height: window.innerWidth < 450 ? "88vh":"91vh",
+        autoCenter: true,
+        display:  window.innerWidth < 828 ? 'single':'double',
+        duration: 2000,         // Longer duration for a smoother turn
+        acceleration: true,     // Enables hardware acceleration
+        gradients: true,        // Shows gradients during the turn
+        elevation: 50,          // Adds depth effect during turning
+        page: 1,                // Starting page
+        mouseWheel: true,       // Enable page turn via mouse wheel
+        // You can also control active corners (if needed)
+        turnCorners: "tl, tr, bl, br",
+        when: {
+          turning: function(e, page, view) {
+            console.log('Turning to page ' + page);
+          },
+          turned: function(e, page, view) {
+            console.log('Turned to page ' + page);
+          },
+          missing: function(e, pages) {
+            console.log('Missing pages: ' + pages);
+          }
+        }
+      });
+      // Custom click event to allow clicking anywhere on the book
+      $('#book').click(function(e) {
+        var offset = $(this).offset();
+        var bookWidth = $(this).width();
+        var clickX = e.pageX - offset.left;
+        // If click is on the right half, go to next page; otherwise, previous page
+        if (clickX > bookWidth / 2) {
+          $(this).turn('next');
+        } else {
+          $(this).turn('previous');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
